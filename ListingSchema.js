@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 /* Create your schema */
 var listingSchema = new Schema({
 
-  /* your code here */
+  /* your code here DONE.*/ 
 
   code: {type: String, required: true},
   name: {type: String, required: true},
@@ -20,7 +20,7 @@ var listingSchema = new Schema({
 
 /* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
 listingSchema.pre('save', function(next) {
-  /* your code here */
+  /* your code here. DONE */
   var currentDate = new Date();
 
   this.updated_at = currentDate;
