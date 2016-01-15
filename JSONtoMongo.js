@@ -54,12 +54,7 @@ MongoClient.connect(config.db.uri, function(err, db){
 
 
 
-
-  /*newListing.save(function(err){
-    if(err) throw err;
-
-    console.log('Listing created!');
-  });*/
+  
 
 
   //db.close();
