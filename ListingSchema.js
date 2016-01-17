@@ -9,13 +9,10 @@ var listingSchema = new Schema({
 
   code: {type: String, required: true},
   name: {type: String, required: true},
-  //not sure if this is the right way to do the coordinates
   coordinates: [{ latitude: Number, longitude: Number}], 
   address: String,
   created_at: Date,
   updated_at: Date
-
-
 });
 
 /* create a 'pre' function that adds the updated_at (and created_at if not already there) property */

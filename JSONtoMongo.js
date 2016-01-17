@@ -8,59 +8,26 @@ var fs = require('fs'),
     Schema = mongoose.Schema, 
     Listing = require('./ListingSchema.js'), 
     config = require('./config'),
-    MongoClient = require('mongodb').MongoClient;
-
-
-/* Connect to your database. */
-MongoClient.connect(config.db.uri, function(err, db){
-  if(!err){
-    console.log("We are connected");
-  }
-
-  var collection = db.collection('listings');
-  /* 
-    Instantiate a mongoose model for each listing object in the JSON file, 
-    and then save it to your Mongo database 
-   */
-
-  //create new listings
-
-  //Just using these listings to test to make sure it works. 
-  var newListing1 = {
-    code: 'MIC',
-    name: 'Mickey Mouse',
-    //not sure if this is the right way to do the coordinates
-    coordinates: [{ latitude: 4325, longitude: 65234}], 
-    address: 'Magic Kingdom'
-  };
-
-  var newListing2 = {
-    code: 'DON',
-    name: 'Donald Duck',
-    //not sure if this is the right way to do the coordinates
-    coordinates: [{ latitude: 74365, longitude: 76543}], 
-    address: 'Epcot'
-  };
-
-  //insert new listings
-  collection.insert([newListing1, newListing2], function(err, result){
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log('Inserted into the collection!');
-    }
+    jsonListings = require('./listings.json'),
+    assert = require('assert');
+    
+/* Connect to your database. DONE*/
+  mongoose.connect(config.db.uri);
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function() {
+    console.log("Connected!");
+    /* 
+        Instantiate a mongoose model for each listing object in the JSON file, 
+        and then save it to your Mongo database. DONE 
+       */
+    var collection = db.collection('listings');
+    Listing.collection.insertMany(jsonListings.entries, function(err,r){
+      assert.equal(null,err);
+    })
   });
-
-
-
-  
-
-
-  //db.close();
-});
-
+    
 /* 
   Once you've written + run the script, check out your MongoLab database to ensure that 
-  it saved everything correctly. 
+  it saved everything correctly. DONE
  */
