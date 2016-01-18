@@ -22,6 +22,7 @@ var fs = require('fs'),
         and then save it to your Mongo database. DONE 
        */
     var collection = db.collection('listings');
+    //NEED TO FIND A WAY TO ADD THE CREATED ON DATE (USING PRE FUNCTION)?
     Listing.collection.insertMany(jsonListings.entries, function(err,r){
       assert.equal(null,err);
     })
