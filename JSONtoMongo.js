@@ -7,25 +7,32 @@ var fs = require('fs'),
     mongoose = require('mongoose'), 
     Schema = mongoose.Schema, 
     Listing = require('./ListingSchema.js'), 
-    config = require('./config'),
-    jsonListings = require('./listings.json'),
-    assert = require('assert');
+    config = require('./config');
     
 /* Connect to your database. DONE*/
   mongoose.connect(config.db.uri);
+
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error:'));
   db.once('open', function() {
     console.log("Connected!");
-    /* 
+
+      /* 
         Instantiate a mongoose model for each listing object in the JSON file, 
         and then save it to your Mongo database. DONE 
        */
-    var collection = db.collection('listings');
-    //NEED TO FIND A WAY TO ADD THE CREATED ON DATE (USING PRE FUNCTION)?
-    Listing.collection.insertMany(jsonListings.entries, function(err,r){
-      assert.equal(null,err);
-    })
+
+    var listingsToAdd = JSON.parse(fs.readFileSync('./listings.json', 'utf8')).entries;
+    var callback = function(err){
+      if(err) throw err;
+    }
+
+    for(var i = 0; i < listingsToAdd.length; i++){
+        new Listing(listingsToAdd[i]).save(callback);
+    }
+
+    console.log('Listings added.');
+
   });
     
 /* 

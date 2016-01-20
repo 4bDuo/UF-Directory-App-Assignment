@@ -1,6 +1,7 @@
 /* Fill out these functions using Mongoose queries. DONE*/
-var Listing = require('./ListingSchema.js')
+var Listing = require('./ListingSchema.js'),
     mongoose = require('mongoose'), 
+    Schema = mongoose.Schema, 
     config = require('./config');
 
 mongoose.connect(config.db.uri);
@@ -34,17 +35,16 @@ var removeCable = function() {
 };
 
 var updatePhelpsMemorial = function() {
-  /*
-    Phelps Memorial Hospital Center's address is incorrect. Find the listing, update it, and then 
-    log the updated document to the console. DONE
-   */
-  Listing.findOneAndUpdate({name: 'Phelps Laboratory'}, {address: '102 Phelps Lab, Gainesville, FL 32611'}, function(err,listing){
-    if(err) throw err;
+  Listing.findOne({name:'Phelps Laboratory'}, function(err, listing){
+      if(err) throw err;
+
+      listing.address = '102 Phelps Lab, Gainesville, FL 32611';
+      listing.save();
 
       console.log('');
       console.log('Updated Phelps Address:');
-      console.log(listing);
-    });
+      console.log(listing);  
+  });  
 };
 
 var retrieveAllListings = function() {
